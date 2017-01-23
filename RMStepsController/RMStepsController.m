@@ -181,6 +181,7 @@
 		blockself.currentStepViewController.view.alpha = 0;
         blockself.currentStepViewController.view.frame = CGRectMake(fromLeft ? blockself.stepViewControllerContainer.frame.size.width : -blockself.stepViewControllerContainer.frame.size.width, blockself.currentStepViewController.view.frame.origin.y, blockself.currentStepViewController.view.frame.size.width, blockself.currentStepViewController.view.frame.size.height);
     } completion:^(BOOL finished) {
+		blockself.currentStepViewController.view.alpha = 0;
         [blockself.currentStepViewController.view removeFromSuperview];
         blockself.currentStepViewController = aViewController;
     }];

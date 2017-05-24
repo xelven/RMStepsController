@@ -83,7 +83,7 @@
  A `RMStepsBar` is a subclass of `UIToolbar`. It displays the progress of an user while going through an arbitrary number of steps.
  */
 
-@interface RMStepsBar : UIToolbar
+@interface RMStepsBar : UINavigationBar
 
 /**
  The delegate of this `RMStepsBar`. Must conform to the `RMStepsBarDelegate` protocol.

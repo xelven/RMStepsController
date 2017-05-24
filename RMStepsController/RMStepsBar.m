@@ -224,44 +224,15 @@
     self = [super initWithFrame:frame];
     if(self) {
         self.translatesAutoresizingMaskIntoConstraints = NO;
-        self.clipsToBounds = YES;
-        
-        self.topLine.frame = CGRectMake(0, frame.size.height-43, frame.size.width, 0.4);
-        [self addSubview:self.topLine];
-        
-        self.bottomLine.frame = CGRectMake(0, frame.size.height-0.5, frame.size.width, 0.5);
-        [self addSubview:self.bottomLine];
-        
-        self.cancelButton.frame = CGRectMake(0, frame.size.height-43, RM_CANCEL_BUTTON_WIDTH, 42);
-        [self addSubview:self.cancelButton];
-        
-        self.cancelSeperator.frame = CGRectMake(RM_CANCEL_BUTTON_WIDTH, frame.size.height-44, 0.5, frame.size.height);
-        [self addSubview:self.cancelSeperator];
 
-		self.titleLabel.frame = CGRectMake(CGRectGetMaxX(self.cancelSeperator.frame), frame.size.height-44, 100, 42);
-		[self addSubview:self.titleLabel];
+		UINavigationItem *navItem = [[UINavigationItem alloc] init];
+		navItem.title = @"Navigation Bar title here";
 
-        NSNumber *cancelWidth = @(RM_CANCEL_BUTTON_WIDTH);
-        
-        NSDictionary *bindingsDict = NSDictionaryOfVariableBindings(_topLine, _bottomLine, _cancelButton, _cancelSeperator,_titleLabel);
-        NSDictionary *metricsDict = NSDictionaryOfVariableBindings(cancelWidth);
-        
-        [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-(0)-[_topLine]-(0)-|" options:0 metrics:metricsDict views:bindingsDict]];
-        [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-(0)-[_bottomLine]-(0)-|" options:0 metrics:metricsDict views:bindingsDict]];
-        [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"[_cancelButton(cancelWidth)]-(0)-[_cancelSeperator(0.5)]" options:0 metrics:metricsDict views:bindingsDict]];
-		
-        self.cancelButtonXConstraint = [[NSLayoutConstraint constraintsWithVisualFormat:@"|-(0)-[_cancelButton]" options:0 metrics:metricsDict views:bindingsDict] lastObject];
-        [self addConstraint:self.cancelButtonXConstraint];
-        
-        [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_topLine(0.5)]-(43)-[_bottomLine(0.5)]-(0)-|" options:0 metrics:metricsDict views:bindingsDict]];
-        [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_cancelButton(43)]-(0.5)-|" options:0 metrics:metricsDict views:bindingsDict]];
-        [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_cancelSeperator(43)]-(0.5)-|" options:0 metrics:metricsDict views:bindingsDict]];
-		
+		// TODO: change to close image
+		UIBarButtonItem *leftButton = [[UIBarButtonItem alloc] initWithTitle:@"Ｘ" style:UIBarButtonItemStylePlain target:self action:@selector(cancelButtonTapped:)];
+		navItem.leftBarButtonItem = leftButton;
 
-		[self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"[_cancelButton(cancelWidth)]-(0)-[_cancelSeperator(0.5)]-(0)-[_titleLabel(200)]-(0)-|" options:0 metrics:metricsDict views:bindingsDict]];
-		[self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_titleLabel(44)]-(0)-|" options:0 metrics:metricsDict views:bindingsDict]];
-		
-        [self addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(recognizedTap:)]];
+		self.items = @[navItem];
     }
     return self;
 }
@@ -272,7 +243,7 @@
 {
 	if(newMainColor != _mainColor){
 		_mainColor = newMainColor;
-		[self.titleLabel setTextColor:newMainColor];
+		[self setTitleTextAttributes: @{NSForegroundColorAttributeName: newMainColor? newMainColor : [UIColor blackColor]}];
 	}
 }
 
@@ -388,8 +359,8 @@
 
 - (void)setIndexOfSelectedStep:(NSUInteger)newIndexOfSelectedStep animated:(BOOL)animated {
 	NSUInteger totalNumber = [self.dataSource numberOfStepsInStepsBar:self];
-	NSString* strText = [NSString stringWithFormat:@"%d of %d questions",newIndexOfSelectedStep+1,totalNumber];
-	[self.titleLabel setText:strText];
+	NSString* strText = [NSString stringWithFormat:@"Questions %zd of %zd ", newIndexOfSelectedStep+1, totalNumber];
+	self.topItem.title = strText;
 }
 
 #pragma mark - Helper

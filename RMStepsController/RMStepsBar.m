@@ -228,8 +228,11 @@
 		UINavigationItem *navItem = [[UINavigationItem alloc] init];
 		navItem.title = @"Navigation Bar title here";
 
-		// TODO: change to close image
-		UIBarButtonItem *leftButton = [[UIBarButtonItem alloc] initWithTitle:@"Ｘ" style:UIBarButtonItemStylePlain target:self action:@selector(cancelButtonTapped:)];
+		NSBundle *resourceBundle = [NSBundle bundleWithPath:[[NSBundle bundleForClass:[self class]] pathForResource:@"RMStepsController" ofType:@"bundle"]];
+		NSString *imagePath = [resourceBundle pathForResource:@"close" ofType:@"png"];
+		UIImage *closeImage = [UIImage imageWithContentsOfFile:imagePath];
+
+		UIBarButtonItem *leftButton = [[UIBarButtonItem alloc] initWithImage:closeImage style:UIBarButtonItemStylePlain target:self action:@selector(cancelButtonTapped:)];
 		navItem.leftBarButtonItem = leftButton;
 
 		self.items = @[navItem];
@@ -244,6 +247,7 @@
 	if(newMainColor != _mainColor){
 		_mainColor = newMainColor;
 		[self setTitleTextAttributes: @{NSForegroundColorAttributeName: newMainColor? newMainColor : [UIColor blackColor]}];
+		self.tintColor = newMainColor;
 	}
 }
 

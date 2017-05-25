@@ -88,7 +88,7 @@
 /**
  The delegate of this `RMStepsBar`. Must conform to the `RMStepsBarDelegate` protocol.
  */
-@property (nonatomic, weak) id<RMStepsBarDelegate> delegate;
+@property (nonatomic, weak) id<RMStepsBarDelegate> stepBarDelegate;
 
 /**
  The data source of this `RMStepsBar`. Must conform to the `RMStepsBarDataSource` protocol.

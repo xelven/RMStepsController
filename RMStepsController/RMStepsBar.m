@@ -377,7 +377,7 @@
 }
 
 - (void)cancelButtonTapped:(id)sender {
-    [self.delegate stepsBarDidSelectCancelButton:self];
+    [self.stepBarDelegate stepsBarDidSelectCancelButton:self];
 }
 
 - (void)recognizedTap:(UIGestureRecognizer *)recognizer {
@@ -388,7 +388,7 @@
         if(CGRectContainsPoint(step.stepView.frame, touchLocation)) {
             NSInteger index = [self.stepDictionaries indexOfObject:aStepDict];
             if(index < self.indexOfSelectedStep && self.allowBackward) {
-                [self.delegate stepsBar:self shouldSelectStepAtIndex:index];
+                [self.stepBarDelegate stepsBar:self shouldSelectStepAtIndex:index];
             }
         }
     }

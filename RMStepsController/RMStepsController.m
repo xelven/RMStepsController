@@ -87,7 +87,7 @@
 - (RMStepsBar *)stepsBar {
     if(!_stepsBar) {
         self.stepsBar = [[RMStepsBar alloc] initWithFrame:CGRectZero];
-        _stepsBar.delegate = self;
+        _stepsBar.stepBarDelegate = self;
         _stepsBar.dataSource = self;
     }
     

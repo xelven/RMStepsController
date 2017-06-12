@@ -363,7 +363,7 @@
 
 - (void)setIndexOfSelectedStep:(NSUInteger)newIndexOfSelectedStep animated:(BOOL)animated {
 	NSUInteger totalNumber = [self.dataSource numberOfStepsInStepsBar:self];
-	NSString* strText = [NSString stringWithFormat:@"Questions %zd of %zd ", newIndexOfSelectedStep+1, totalNumber];
+	NSString* strText = [NSString stringWithFormat:NSLocalizedString(@"Questions %zd of %zd", nil), newIndexOfSelectedStep+1, totalNumber];
 	self.topItem.title = strText;
 }
 

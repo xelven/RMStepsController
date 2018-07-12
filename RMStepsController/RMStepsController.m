@@ -34,10 +34,10 @@
 @property (nonatomic, strong, readwrite) RMStepsBar *stepsBar;
 @property (nonatomic, strong) UIView *stepViewControllerContainer;
 
-@property (copy, nonatomic) void (^nextBlock)(NSMutableDictionary* results);
-@property (copy, nonatomic) void (^previousBlock)(NSMutableDictionary* results);
-@property (copy, nonatomic) void (^finishedBlock)(NSMutableDictionary* results);
-@property (copy, nonatomic) void (^cancelledBlock)(NSMutableDictionary* results);
+@property (copy, nonatomic) BOOL (^nextBlock)(NSMutableDictionary* results);
+@property (copy, nonatomic) BOOL (^previousBlock)(NSMutableDictionary* results);
+@property (copy, nonatomic) BOOL (^finishedBlock)(NSMutableDictionary* results);
+@property (copy, nonatomic) BOOL (^cancelledBlock)(NSMutableDictionary* results);
 
 
 @end
@@ -222,24 +222,34 @@
 - (void)showNextStep {
     NSInteger index = [self.childViewControllers indexOfObject:self.currentStepViewController];
     if(index < [self.childViewControllers count]-1) {
-        UIViewController *nextStepViewController = [self.childViewControllers objectAtIndex:index+1];
-        [self showStepViewController:nextStepViewController animated:YES];
-		if(self.nextBlock)
-			self.nextBlock(self.results);
+        BOOL goNext = YES;
+        if(self.nextBlock){
+            goNext = self.nextBlock(self.results);
+        }
+        if(goNext) {
+            UIViewController *nextStepViewController = [self.childViewControllers objectAtIndex:index+1];
+            [self showStepViewController:nextStepViewController animated:YES];
+        }
     } else {
-        [self finishedAllSteps];
-		if(self.finishedBlock)
-			self.finishedBlock(self.results);
+        BOOL goFinished = YES;
+        if(self.finishedBlock)
+            goFinished = self.finishedBlock(self.results);
+        if(goFinished) {
+            [self finishedAllSteps];
+        }
     }
 }
 
 - (void)showPreviousStep {
     NSInteger index = [self.childViewControllers indexOfObject:self.currentStepViewController];
     if(index > 0) {
-        UIViewController *nextStepViewController = [self.childViewControllers objectAtIndex:index-1];
-        [self showStepViewController:nextStepViewController animated:YES];
-		if(self.previousBlock)
-			self.previousBlock(self.results);
+        BOOL goPrevious = YES;
+        if(self.previousBlock)
+            goPrevious = self.previousBlock(self.results);
+        if(goPrevious) {
+            UIViewController *nextStepViewController = [self.childViewControllers objectAtIndex:index-1];
+            [self showStepViewController:nextStepViewController animated:YES];
+        }
     } else {
         [self canceled];
     }
@@ -269,9 +279,12 @@
 }
 
 - (void)stepsBarDidSelectCancelButton:(RMStepsBar *)bar {
-    [self canceled];
-	if(self.cancelledBlock)
-		self.cancelledBlock(self.results);
+    BOOL goCanceled = YES;
+    if(self.cancelledBlock)
+        goCanceled = self.cancelledBlock(self.results);
+    if(goCanceled) {
+        [self canceled];
+    }
 }
 
 - (void)stepsBar:(RMStepsBar *)bar shouldSelectStepAtIndex:(NSInteger)index {
@@ -279,19 +292,19 @@
 }
 
 
-- (void)onNext:(void (^)(NSMutableDictionary* currentResults))nextBlock {
+- (void)onNext:(BOOL (^)(NSMutableDictionary* currentResults))nextBlock {
 	self.nextBlock = nextBlock;
 }
 
-- (void)onPrevious:(void (^)(NSMutableDictionary* currentResults))previousBlock {
+- (void)onPrevious:(BOOL (^)(NSMutableDictionary* currentResults))previousBlock {
 	self.previousBlock = previousBlock;
 }
 
-- (void)onFinished:(void (^)(NSMutableDictionary* results))finishedBlock {
+- (void)onFinished:(BOOL (^)(NSMutableDictionary* results))finishedBlock {
 	self.finishedBlock = finishedBlock;
 }
 
-- (void)onCancelled:(void (^)(NSMutableDictionary* currentResults))cancelledBlock {
+- (void)onCancelled:(BOOL (^)(NSMutableDictionary* currentResults))cancelledBlock {
 	self.cancelledBlock = cancelledBlock;
 }
 

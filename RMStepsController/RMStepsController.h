@@ -97,10 +97,10 @@
 - (void)canceled;
 
 
-- (void)onNext:(void (^)(NSMutableDictionary* currentResults))nextBlock;
-- (void)onPrevious:(void (^)(NSMutableDictionary* currentResults))previousBlock;
-- (void)onFinished:(void (^)(NSMutableDictionary* results))finishedBlock;
-- (void)onCancelled:(void (^)(NSMutableDictionary* currentResults))cancelledBlock;
+- (void)onNext:(BOOL (^)(NSMutableDictionary* currentResults))nextBlock;
+- (void)onPrevious:(BOOL (^)(NSMutableDictionary* currentResults))previousBlock;
+- (void)onFinished:(BOOL (^)(NSMutableDictionary* results))finishedBlock;
+- (void)onCancelled:(BOOL (^)(NSMutableDictionary* currentResults))cancelledBlock;
 
 
 @end
